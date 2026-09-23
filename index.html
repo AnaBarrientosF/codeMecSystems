@@ -163,18 +163,24 @@
   .method-card h3{ font-size:24px; letter-spacing:.05em; text-transform:uppercase; margin:12px 0 8px; font-weight:600; }
   .method-card p{ margin:0; font-size:14.5px; color:var(--color-neutral-700); }
 
-  .photo-grid{ display:grid; grid-template-columns:1fr; gap:clamp(20px,2.4vw,36px); margin-top:clamp(20px,2.4vw,36px); }
-  @media (min-width:640px){ .photo-grid{ grid-template-columns:1fr 1fr; } }
-  .photo-frame{ padding:10px; background:var(--color-bg); }
-  .photo-slot{
-    height:clamp(170px,22vw,230px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-    background:
-      radial-gradient(120% 140% at 15% 0%, rgba(148,188,227,.35), transparent 55%),
-      linear-gradient(160deg, var(--color-accent-900), #10202e);
-    color:rgba(238,242,246,.65);
+  .github-block{
+    margin-top:clamp(20px,2.4vw,36px); padding:clamp(28px,3.4vw,44px); background:var(--color-accent-900); color:#eef2f6;
+    display:flex; flex-direction:column; gap:22px; position:relative; overflow:hidden;
   }
-  .photo-slot svg{ opacity:.8; }
-  .photo-slot span{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; }
+  .github-block::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image:repeating-linear-gradient(to right, rgba(148,188,227,.09) 0 1px, transparent 1px 56px),
+                      repeating-linear-gradient(to bottom, rgba(148,188,227,.09) 0 1px, transparent 1px 56px);
+  }
+  .github-row{ position:relative; display:flex; flex-wrap:wrap; align-items:center; gap:20px; }
+  .github-icon{ flex:none; width:52px; height:52px; display:grid; place-items:center; border:1px solid rgba(148,188,227,.4); }
+  .github-icon svg{ width:28px; height:28px; }
+  .github-copy{ flex:1 1 260px; min-width:0; }
+  .github-copy .fname{ font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; color:#94bce3; word-break:break-all; }
+  .github-copy h3{ margin:6px 0 4px; font-size:22px; letter-spacing:.03em; text-transform:uppercase; font-weight:600; color:#fff; }
+  .github-copy p{ margin:0; font-size:14.5px; line-height:1.5; color:rgba(238,242,246,.75); }
+  .github-block .btn{ position:relative; flex:none; align-self:flex-start; }
+  @media (min-width:640px){ .github-block .btn{ align-self:center; } }
 
   /* contact */
   #contacto{ position:relative; background:var(--color-accent-900); color:#eef2f6; overflow:hidden; }
@@ -373,20 +379,18 @@
       </div>
     </div>
 
-    <div class="photo-grid">
-      <div class="blueprint photo-frame">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <div class="photo-slot">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="8" r="3"></circle><path d="M2.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"></path><path d="M13 15.3c.9-.2 1.8-.3 2.5-.3 3 0 5.5 2 5.5 5"></path></svg>
-          <span data-es="Foto: equipo de trabajo" data-en="Photo: work team">Foto: equipo de trabajo</span>
+    <div class="blueprint github-block">
+      <i class="corner tl light"></i><i class="corner tr light"></i><i class="corner bl light"></i><i class="corner br light"></i>
+      <div class="github-row">
+        <div class="github-icon">
+          <svg viewBox="0 0 16 16" fill="#eef2f6" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
         </div>
-      </div>
-      <div class="blueprint photo-frame">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <div class="photo-slot">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="4" width="16" height="6"></rect><rect x="4" y="14" width="16" height="6"></rect><circle cx="7.5" cy="7" r=".8" fill="currentColor" stroke="none"></circle><circle cx="7.5" cy="17" r=".8" fill="currentColor" stroke="none"></circle></svg>
-          <span data-es="Foto: servidores / IoT" data-en="Photo: servers / IoT">Foto: servidores / IoT</span>
+        <div class="github-copy">
+          <div class="fname">github.com/AnaBarrientosF/CodeMec</div>
+          <h3 data-es="Nuestro código, abierto" data-en="Our code, in the open">Nuestro código, abierto</h3>
+          <p data-es="Explora los proyectos y el trabajo técnico detrás de CodeMec Systems." data-en="Explore the projects and the technical work behind CodeMec Systems.">Explora los proyectos y el trabajo técnico detrás de CodeMec Systems.</p>
         </div>
+        <a href="https://github.com/AnaBarrientosF/CodeMec" target="_blank" rel="noopener" class="btn btn-outline-dark" data-es="Ver en GitHub →" data-en="View on GitHub →">Ver en GitHub →</a>
       </div>
     </div>
   </div>
@@ -400,7 +404,7 @@
     <p data-es="Cuéntanos tu caso. Primera conversación de 30 minutos, sin preparación." data-en="Tell us about your case. First conversation, 30 minutes, no prep needed.">Cuéntanos tu caso. Primera conversación de 30 minutos, sin preparación.</p>
     <div class="contact-ctas">
       <a href="mailto:tech@codemecsys.com" class="btn btn-primary" data-es="Escribir a CodeMec" data-en="Email CodeMec">Escribir a CodeMec</a>
-      <a href="https://www.instagram.com/codemec.projects" target="_blank" rel="noopener" class="btn btn-outline-dark">@codemecsystems</a>
+      <a href="https://www.instagram.com/codemec.projects/" target="_blank" rel="noopener" class="btn btn-outline-dark">@codemecsystems</a>
     </div>
   </div>
 </section>
