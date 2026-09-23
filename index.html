@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CodeMec Systems — Automatización, IA y Datos</title>
+<meta name="description" content="Diseñamos procesos, construimos sistemas y automatizamos operaciones. Software que hace el trabajo repetitivo por tu equipo. Guatemala.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2.5' y='2.5' width='19' height='19' fill='none' stroke='%231d2d3d' stroke-width='2'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%2394bce3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --color-bg:#f7f7f4;
+    --color-text:#1d2d3d;
+    --color-neutral-100:#eeeeec;
+    --color-neutral-600:#6a6e70;
+    --color-neutral-700:#52585d;
+    --color-divider:rgba(29,45,61,.14);
+
+    --color-accent:#3d6690;
+    --color-accent-100:#e9f1fa;
+    --color-accent-400:#94bce3;
+    --color-accent-700:#3a6b93;
+    --color-accent-800:#2a4f6d;
+    --color-accent-900:#1d2d3d;
+
+    --font-heading:'Barlow Condensed', sans-serif;
+    --font-body:'Barlow', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+
+    --pad: clamp(20px, 5vw, 72px);
+    --sec: clamp(56px, 7vw, 104px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top:80px;}
+  body{
+    margin:0; background:var(--color-bg); color:var(--color-text);
+    font-family:var(--font-body); font-size:15px; line-height:1.55;
+    -webkit-font-smoothing:antialiased; padding-top:env(safe-area-inset-top,0px);
+  }
+  h1,h2,h3{font-family:var(--font-heading);}
+  a{color:var(--color-accent-700); text-decoration:none;}
+  a:hover{color:var(--color-accent-800);}
+  svg{display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 var(--pad);}
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-family:var(--font-heading);
+    cursor:pointer; border:none; border-radius:0; padding:15px 28px; font-size:15px; letter-spacing:.08em;
+    text-transform:uppercase; transition:background .15s ease,border-color .15s ease,color .15s ease; white-space:nowrap; }
+  .btn-primary{ background:var(--color-accent-400); color:var(--color-accent-900); }
+  .btn-primary:hover{ background:#b5d9fd; color:var(--color-accent-900); }
+  .btn-outline-dark{ background:transparent; border:1px solid rgba(148,188,227,.5); color:#eef2f6; }
+  .btn-outline-dark:hover{ border-color:#94bce3; background:rgba(148,188,227,.12); }
+  .btn-header{ padding:11px 20px; font-size:13.5px; background:var(--color-accent-700); color:var(--color-bg); }
+  .btn-header:hover{ background:var(--color-accent-800); color:var(--color-bg); }
+
+  .blueprint{ position:relative; border:1px solid var(--color-divider); }
+  .corner{ position:absolute; width:9px; height:9px; pointer-events:none; color:var(--color-divider); }
+  .corner::before,.corner::after{ content:""; position:absolute; background:currentColor; }
+  .corner::before{ width:9px; height:1px; top:4px; left:0; }
+  .corner::after{ width:1px; height:9px; left:4px; top:0; }
+  .corner.tl{ top:-1px; left:-1px; } .corner.tr{ top:-1px; right:-1px; }
+  .corner.bl{ bottom:-1px; left:-1px; } .corner.br{ bottom:-1px; right:-1px; }
+  .corner.light{ color:rgba(148,188,227,.75); }
+
+  /* header */
+  header{ position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--color-divider); }
+  .headerbar{ height:70px; display:flex; align-items:center; gap:clamp(14px,2.4vw,32px); }
+  .brand{ display:flex; align-items:center; gap:9px; color:var(--color-text); flex:none; }
+  .brand-mark{ width:32px; height:32px; flex:none; }
+  .brand-text{ display:flex; flex-direction:column; line-height:1; }
+  .brand-text .l1{ font-family:var(--font-heading); font-weight:700; font-size:clamp(15px,4vw,19px); letter-spacing:.09em; text-transform:uppercase; }
+  .brand-text .l1 span{ color:var(--color-accent-700); }
+  .brand-text .l2{ font-size:8.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--color-neutral-600); margin-top:3px; }
+
+  nav.mainnav{ display:none; gap:clamp(14px,2vw,28px); margin-left:auto; align-items:center; }
+  nav.mainnav a{ font-size:13.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:500; color:var(--color-neutral-700); }
+  nav.mainnav a:hover{ color:var(--color-accent-800); }
+  .cta-desktop{ display:none; }
+  .menu-btn{ width:38px; height:38px; display:grid; place-items:center; background:transparent;
+    border:1px solid var(--color-divider); cursor:pointer; color:var(--color-text); flex:none; }
+  @media (min-width:820px){ nav.mainnav{ display:flex; } .cta-desktop{ display:inline-flex; } .menu-btn{ display:none; } }
+
+  .lang-toggle{ margin-left:auto; display:flex; border:1px solid var(--color-divider); flex:none; }
+  .lang-toggle button{ font-family:var(--font-mono); font-size:12px; letter-spacing:.06em; font-weight:500;
+    padding:8px 11px; background:transparent; border:none; cursor:pointer; color:var(--color-neutral-600); }
+  .lang-toggle button.active{ background:var(--color-accent-700); color:var(--color-bg); }
+  .lang-toggle button:not(.active):hover{ background:var(--color-accent-100); color:var(--color-text); }
+  @media (min-width:820px){ .lang-toggle{ margin-left:16px; } }
+
+  #mobilemenu{ display:none; border-top:1px solid var(--color-divider); background:var(--color-bg); }
+  #mobilemenu.open{ display:block; }
+  #mobilemenu a{ display:block; padding:14px var(--pad); font-size:14px; letter-spacing:.06em; text-transform:uppercase;
+    font-weight:500; color:var(--color-text); border-bottom:1px solid var(--color-divider); }
+  #mobilemenu .row{ display:flex; gap:10px; padding:14px var(--pad); }
+  @media (min-width:820px){ #mobilemenu{ display:none !important; } }
+
+  /* hero */
+  #top{ position:relative; background:var(--color-accent-900); color:#eef2f6; overflow:hidden; }
+  #top .bgpattern{ position:absolute; inset:0; pointer-events:none;
+    background-image:repeating-linear-gradient(to right, rgba(148,188,227,.10) 0 1px, transparent 1px 72px),
+                      repeating-linear-gradient(to bottom, rgba(148,188,227,.10) 0 1px, transparent 1px 72px); }
+  #top .glow{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(60% 55% at 18% 20%, rgba(148,188,227,.16), transparent 60%); }
+  #top .inner{ position:relative; padding:var(--sec) 0; }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:clamp(30px,4vw,64px); align-items:center; }
+  @media (min-width:820px){ .hero-grid{ grid-template-columns:1.1fr 1fr; } }
+  .kicker{ display:inline-block; font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:#94bce3; border:1px solid rgba(148,188,227,.4); padding:5px 11px; }
+  h1.hero-title{ font-weight:600; font-size:clamp(34px,5.6vw,62px); line-height:1.03; letter-spacing:.01em; text-transform:uppercase;
+    margin:24px 0 0; color:#fff; }
+  h1.hero-title .accent{ color:#94bce3; }
+  .hero-lede{ font-size:clamp(16px,1.6vw,19px); line-height:1.55; max-width:44ch; margin:24px 0 0; color:rgba(238,242,246,.85); }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
+
+  .codepanel{ border-color:rgba(148,188,227,.4); background:rgba(10,20,30,.55); }
+  .codepanel-head{ display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid rgba(148,188,227,.3); }
+  .codepanel-head .dot{ width:8px; height:8px; border:1px solid rgba(148,188,227,.6); }
+  .codepanel-head .fname{ margin-left:8px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.06em; color:rgba(238,242,246,.6); }
+  .codepanel pre{ margin:0; padding:18px 16px; font-family:var(--font-mono); font-size:13px; line-height:1.75;
+    color:rgba(238,242,246,.9); overflow-x:auto; }
+  .kw{ color:#94bce3; } .str{ color:#b5d9fd; } .cm{ color:rgba(238,242,246,.45); }
+  .codepanel-stats{ display:flex; flex-wrap:wrap; border-top:1px solid rgba(148,188,227,.3); }
+  .codepanel-stats div{ flex:1 1 80px; padding:14px 16px; border-right:1px solid rgba(148,188,227,.2); }
+  .codepanel-stats div:last-child{ border-right:none; }
+  .codepanel-stats .v{ font-family:var(--font-heading); font-size:26px; line-height:1; color:#fff; font-weight:600; }
+  .codepanel-stats .l{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:rgba(238,242,246,.6); margin-top:4px; }
+
+  /* problem strip */
+  .strip{ border-bottom:1px solid var(--color-divider); background:var(--color-neutral-100); }
+  .strip-grid{ padding:clamp(28px,3vw,44px) 0; display:grid; grid-template-columns:1fr; gap:clamp(18px,2.4vw,36px); }
+  @media (min-width:560px){ .strip-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:940px){ .strip-grid{ grid-template-columns:repeat(4,1fr); } }
+  .strip-item{ display:flex; gap:12px; align-items:flex-start; }
+  .strip-item svg{ flex:none; margin-top:2px; }
+  .strip-item .t{ font-family:var(--font-heading); font-size:18px; letter-spacing:.05em; text-transform:uppercase; font-weight:600; }
+  .strip-item p{ margin:2px 0 0; font-size:14px; color:var(--color-neutral-700); }
+
+  /* section head with mono tag */
+  .sec-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:16px; }
+  .sec-head h2{ font-weight:600; font-size:clamp(30px,4vw,52px); line-height:1; letter-spacing:.01em; text-transform:uppercase; margin:0; }
+  .sec-tag{ font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--color-accent-700); margin-left:auto; }
+  .sec-rule{ height:1px; background:var(--color-divider); margin:18px 0 clamp(26px,3vw,44px); }
+
+  /* services */
+  #servicios{ padding:var(--sec) 0; }
+  .svc-grid{ display:grid; grid-template-columns:1fr; gap:clamp(16px,2vw,24px); }
+  @media (min-width:560px){ .svc-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:940px){ .svc-grid{ grid-template-columns:repeat(4,1fr); } }
+  .svc-cell{ position:relative; border:1px solid var(--color-divider); background:var(--color-bg); padding:26px 22px; transition:background .15s ease; }
+  .svc-cell:hover{ background:var(--color-accent-100); }
+  .svc-cell h3{ font-size:22px; letter-spacing:.04em; text-transform:uppercase; margin:16px 0 6px; font-weight:600; }
+  .svc-cell p{ margin:0; font-size:14.5px; color:var(--color-neutral-700); }
+
+  /* metodo */
+  #metodo{ background:var(--color-neutral-100); border-top:1px solid var(--color-divider); border-bottom:1px solid var(--color-divider); padding:var(--sec) 0; }
+  .method-grid{ display:grid; grid-template-columns:1fr; gap:clamp(20px,2.4vw,36px); }
+  @media (min-width:640px){ .method-grid{ grid-template-columns:repeat(3,1fr); } }
+  .method-card{ padding:24px 22px; background:var(--color-bg); }
+  .method-card .n{ font-family:var(--font-heading); font-size:40px; line-height:1; color:var(--color-accent); font-weight:600; }
+  .method-card h3{ font-size:24px; letter-spacing:.05em; text-transform:uppercase; margin:12px 0 8px; font-weight:600; }
+  .method-card p{ margin:0; font-size:14.5px; color:var(--color-neutral-700); }
+
+  .photo-grid{ display:grid; grid-template-columns:1fr; gap:clamp(20px,2.4vw,36px); margin-top:clamp(20px,2.4vw,36px); }
+  @media (min-width:640px){ .photo-grid{ grid-template-columns:1fr 1fr; } }
+  .photo-frame{ padding:10px; background:var(--color-bg); }
+  .photo-slot{
+    height:clamp(170px,22vw,230px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+    background:
+      radial-gradient(120% 140% at 15% 0%, rgba(148,188,227,.35), transparent 55%),
+      linear-gradient(160deg, var(--color-accent-900), #10202e);
+    color:rgba(238,242,246,.65);
+  }
+  .photo-slot svg{ opacity:.8; }
+  .photo-slot span{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; }
+
+  /* contact */
+  #contacto{ position:relative; background:var(--color-accent-900); color:#eef2f6; overflow:hidden; }
+  #contacto .bgpattern{ position:absolute; inset:0; pointer-events:none;
+    background-image:repeating-linear-gradient(to right, rgba(148,188,227,.10) 0 1px, transparent 1px 72px),
+                      repeating-linear-gradient(to bottom, rgba(148,188,227,.10) 0 1px, transparent 1px 72px); }
+  #contacto .inner{ position:relative; padding:var(--sec) 0; text-align:center; }
+  #contacto h2{ font-weight:600; font-size:clamp(32px,5vw,66px); line-height:1.05; letter-spacing:.01em; text-transform:uppercase; margin:0; color:#fff; }
+  #contacto p{ margin:22px auto 0; font-size:clamp(16px,1.6vw,19px); line-height:1.55; max-width:46ch; color:rgba(238,242,246,.85); }
+  .contact-ctas{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:32px; }
+
+  /* footer */
+  footer{ background:var(--color-accent-900); color:rgba(238,242,246,.6); border-top:1px solid rgba(148,188,227,.25); }
+  .foot-row{ padding:clamp(24px,2.6vw,34px) 0; display:flex; flex-wrap:wrap; gap:12px 28px; align-items:center;
+    font-size:12.5px; letter-spacing:.07em; text-transform:uppercase; }
+  .foot-brand{ display:flex; align-items:center; gap:10px; }
+  .foot-brand span{ font-family:var(--font-heading); font-weight:700; font-size:17px; letter-spacing:.1em; color:#fff; }
+  .foot-row .push{ margin-left:auto; }
+
+  ::selection{ background:var(--color-accent-400); color:var(--color-accent-900); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap headerbar">
+    <a href="#top" class="brand">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19"></rect><rect x="8" y="8" width="8" height="8" fill="var(--color-accent)" stroke="none"></rect><path d="M12 2.5v5.5M12 16v5.5M2.5 12H8M16 12h5.5"></path></svg>
+      <span class="brand-text">
+        <span class="l1">Code<span>Mec</span></span>
+        <span class="l2">Systems</span>
+      </span>
+    </a>
+    <nav class="mainnav">
+      <a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a>
+      <a href="#metodo" data-es="Método" data-en="Method">Método</a>
+    </nav>
+    <div class="lang-toggle" role="group" aria-label="Idioma / Language">
+      <button type="button" id="langEs" class="active" onclick="setLang('es')">ES</button>
+      <button type="button" id="langEn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="#contacto" class="btn btn-header cta-desktop" data-es="Hablemos" data-en="Let's talk">Hablemos</a>
+    <button type="button" class="menu-btn" aria-label="Menú" aria-expanded="false" id="menuToggle">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+    </button>
+  </div>
+  <div id="mobilemenu">
+    <a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a>
+    <a href="#metodo" data-es="Método" data-en="Method">Método</a>
+    <div class="row"><a href="#contacto" class="btn btn-header" style="border:0; width:100%;" data-es="Hablemos" data-en="Let's talk">Hablemos</a></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top">
+  <div class="bgpattern"></div>
+  <div class="glow"></div>
+  <div class="wrap inner">
+    <div class="hero-grid">
+      <div>
+        <span class="kicker" data-es="Automatización · IA · Datos" data-en="Automation · AI · Data">Automatización · IA · Datos</span>
+        <h1 class="hero-title" data-es-html="Software que hace el trabajo repetitivo &lt;span class=&quot;accent&quot;&gt;por tu equipo.&lt;/span&gt;" data-en-html="Software that does the repetitive work &lt;span class=&quot;accent&quot;&gt;for your team.&lt;/span&gt;">Software que hace el trabajo repetitivo <span class="accent">por tu equipo.</span></h1>
+        <p class="hero-lede" data-es="Diseñamos procesos, construimos sistemas y automatizamos operaciones." data-en="We design processes, build systems, and automate operations.">Diseñamos procesos, construimos sistemas y automatizamos operaciones.</p>
+        <div class="hero-ctas">
+          <a href="#contacto" class="btn btn-primary" data-es="Hablemos" data-en="Let's talk">Hablemos</a>
+          <a href="#servicios" class="btn btn-outline-dark" data-es="Ver servicios" data-en="See services">Ver servicios</a>
+        </div>
+      </div>
+
+      <div class="blueprint codepanel">
+        <i class="corner tl light"></i><i class="corner tr light"></i><i class="corner bl light"></i><i class="corner br light"></i>
+        <div class="codepanel-head">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="fname" data-es="proceso_pedidos.py" data-en="order_process.py">proceso_pedidos.py</span>
+        </div>
+        <pre id="codeblock" data-es-html="&lt;span class=&quot;kw&quot;&gt;@automatizar&lt;/span&gt;(&lt;span class=&quot;str&quot;&gt;&quot;pedido_recibido&quot;&lt;/span&gt;)
+&lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; procesar(pedido):
+    validar(pedido)
+    &lt;span class=&quot;cm&quot;&gt;# stock + crédito&lt;/span&gt;
+    &lt;span class=&quot;kw&quot;&gt;if&lt;/span&gt; pedido.ok:
+        facturar(pedido)
+        notificar(cliente)
+    &lt;span class=&quot;kw&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&quot;listo&quot;&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;# 412 ejecuciones hoy · 3 a revisión&lt;/span&gt;" data-en-html="&lt;span class=&quot;kw&quot;&gt;@automate&lt;/span&gt;(&lt;span class=&quot;str&quot;&gt;&quot;order_received&quot;&lt;/span&gt;)
+&lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; process(order):
+    validate(order)
+    &lt;span class=&quot;cm&quot;&gt;# stock + credit&lt;/span&gt;
+    &lt;span class=&quot;kw&quot;&gt;if&lt;/span&gt; order.ok:
+        invoice(order)
+        notify(client)
+    &lt;span class=&quot;kw&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&quot;done&quot;&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;# 412 runs today · 3 flagged for review&lt;/span&gt;"><span class="kw">@automatizar</span>(<span class="str">"pedido_recibido"</span>)
+<span class="kw">def</span> procesar(pedido):
+    validar(pedido)
+    <span class="cm"># stock + crédito</span>
+    <span class="kw">if</span> pedido.ok:
+        facturar(pedido)
+        notificar(cliente)
+    <span class="kw">return</span> <span class="str">"listo"</span>
+<span class="cm"># 412 ejecuciones hoy · 3 a revisión</span></pre>
+        <div class="codepanel-stats">
+          <div><div class="v">−80 %</div><div class="l" data-es="Tareas manuales" data-en="Manual tasks">Tareas manuales</div></div>
+          <div><div class="v">1</div><div class="l" data-es="Fuente de datos" data-en="Data source">Fuente de datos</div></div>
+          <div><div class="v">24/7</div><div class="l" data-es="Operando" data-en="Running">Operando</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM STRIP -->
+<section class="strip">
+  <div class="wrap strip-grid">
+    <div class="strip-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><path d="M3 7a9 9 0 0115.5-3M21 17A9 9 0 015.5 20"></path><path d="M3 3v4h4M21 21v-4h-4"></path></svg>
+      <div><div class="t" data-es="Tareas repetitivas" data-en="Repetitive tasks">Tareas repetitivas</div><p data-es="Copiar y pegar todos los días." data-en="Copy-pasting, every day.">Copiar y pegar todos los días.</p></div>
+    </div>
+    <div class="strip-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><rect x="2.5" y="3.5" width="8" height="7"></rect><rect x="13.5" y="3.5" width="8" height="7"></rect><rect x="8" y="14" width="8" height="6.5"></rect></svg>
+      <div><div class="t" data-es="Datos dispersos" data-en="Scattered data">Datos dispersos</div><p data-es="Excel, WhatsApp y correo." data-en="Excel, WhatsApp, and email.">Excel, WhatsApp y correo.</p></div>
+    </div>
+    <div class="strip-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><path d="M5 3.5h9l5 5v12H5z"></path><path d="M8.5 13h7M8.5 16.5h4.5"></path></svg>
+      <div><div class="t" data-es="Reportes a mano" data-en="Manual reports">Reportes a mano</div><p data-es="Dos días para una reunión." data-en="Two days for one meeting.">Dos días para una reunión.</p></div>
+    </div>
+    <div class="strip-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"></path><circle cx="12" cy="12" r="2.8"></circle><path d="M4 20L20 4"></path></svg>
+      <div><div class="t" data-es="Sin visibilidad" data-en="No visibility">Sin visibilidad</div><p data-es="Te enteras cuando ya pasó." data-en="You find out after it's happened.">Te enteras cuando ya pasó.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="wrap">
+    <div class="sec-head"><h2 data-es="Qué hacemos" data-en="What we do">Qué hacemos</h2><span class="sec-tag" data-es="01 / Servicios" data-en="01 / Services">01 / Servicios</span></div>
+    <div class="sec-rule"></div>
+    <div class="svc-grid">
+      <div class="svc-cell">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><path d="M8.5 7.5L4 12l4.5 4.5M15.5 7.5L20 12l-4.5 4.5M13.5 4l-3 16"></path></svg>
+        <h3 data-es="Software a medida" data-en="Custom software">Software a medida</h3>
+        <p data-es="Sistemas hechos para tu operación, no plantillas." data-en="Systems built for your operation, not templates.">Sistemas hechos para tu operación, no plantillas.</p>
+      </div>
+      <div class="svc-cell">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><rect x="2.5" y="4" width="6" height="6"></rect><rect x="15.5" y="14" width="6" height="6"></rect><path d="M8.5 7h6.5a3 3 0 013 3v4M18.5 10.5L15 7"></path></svg>
+        <h3 data-es="Automatización" data-en="Automation">Automatización</h3>
+        <p data-es="Reglas, aprobaciones y avisos que corren solos." data-en="Rules, approvals, and alerts that run themselves.">Reglas, aprobaciones y avisos que corren solos.</p>
+      </div>
+      <div class="svc-cell">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><rect x="7" y="7" width="10" height="10"></rect><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"></path></svg>
+        <h3 data-es="Inteligencia artificial" data-en="Artificial intelligence">Inteligencia artificial</h3>
+        <p data-es="Lee documentos, clasifica y responde con tus datos." data-en="Reads documents, classifies, and answers using your data.">Lee documentos, clasifica y responde con tus datos.</p>
+      </div>
+      <div class="svc-cell">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><path d="M3.5 20.5h17"></path><rect x="4.5" y="12" width="4" height="8"></rect><rect x="10" y="7" width="4" height="13"></rect><rect x="15.5" y="3.5" width="4" height="16.5"></rect></svg>
+        <h3 data-es="Datos y tableros" data-en="Data & dashboards">Datos y tableros</h3>
+        <p data-es="Tu operación en una pantalla, al día." data-en="Your operation on one screen, always current.">Tu operación en una pantalla, al día.</p>
+      </div>
+      <div class="svc-cell">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><circle cx="5.5" cy="6" r="2.5"></circle><circle cx="18.5" cy="6" r="2.5"></circle><circle cx="12" cy="18" r="2.5"></circle><path d="M5.5 8.5v4a2 2 0 002 2h2M18.5 8.5v4a2 2 0 01-2 2h-2"></path></svg>
+        <h3 data-es="Integraciones" data-en="Integrations">Integraciones</h3>
+        <p data-es="Conectamos ERP, facturación, tienda y APIs." data-en="We connect ERP, billing, storefront, and APIs.">Conectamos ERP, facturación, tienda y APIs.</p>
+      </div>
+      <div class="svc-cell">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" stroke-width="1.5"><rect x="4" y="9" width="16" height="11"></rect><path d="M8 9V6.5a4 4 0 118 0V9"></path><circle cx="12" cy="14.5" r="1.6"></circle></svg>
+        <h3>IoT</h3>
+        <p data-es="Sensores y equipos reportando en vivo." data-en="Sensors and equipment reporting live.">Sensores y equipos reportando en vivo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METODO -->
+<section id="metodo">
+  <div class="wrap">
+    <div class="sec-head"><h2 data-es="Cómo trabajamos" data-en="How we work">Cómo trabajamos</h2><span class="sec-tag" data-es="02 / Método" data-en="02 / Method">02 / Método</span></div>
+    <div class="sec-rule"></div>
+    <div class="method-grid">
+      <div class="blueprint method-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="n">01</span>
+        <h3 data-es="Entendemos" data-en="We understand">Entendemos</h3>
+        <p data-es="Vemos tu proceso real con quienes lo operan y lo mapeamos." data-en="We look at your real process with the people who run it, and map it out.">Vemos tu proceso real con quienes lo operan y lo mapeamos.</p>
+      </div>
+      <div class="blueprint method-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="n">02</span>
+        <h3 data-es="Construimos" data-en="We build">Construimos</h3>
+        <p data-es="Diseño, prototipo que puedes ver, y el sistema integrado." data-en="Design, a prototype you can see, and the integrated system.">Diseño, prototipo que puedes ver, y el sistema integrado.</p>
+      </div>
+      <div class="blueprint method-card">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="n">03</span>
+        <h3 data-es="Automatizamos" data-en="We automate">Automatizamos</h3>
+        <p data-es="Lanzamos, capacitamos y medimos contra el problema inicial." data-en="We launch, train your team, and measure against the original problem.">Lanzamos, capacitamos y medimos contra el problema inicial.</p>
+      </div>
+    </div>
+
+    <div class="photo-grid">
+      <div class="blueprint photo-frame">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="photo-slot">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="3"></circle><circle cx="17" cy="8" r="3"></circle><path d="M2.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"></path><path d="M13 15.3c.9-.2 1.8-.3 2.5-.3 3 0 5.5 2 5.5 5"></path></svg>
+          <span data-es="Foto: equipo de trabajo" data-en="Photo: work team">Foto: equipo de trabajo</span>
+        </div>
+      </div>
+      <div class="blueprint photo-frame">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="photo-slot">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="4" width="16" height="6"></rect><rect x="4" y="14" width="16" height="6"></rect><circle cx="7.5" cy="7" r=".8" fill="currentColor" stroke="none"></circle><circle cx="7.5" cy="17" r=".8" fill="currentColor" stroke="none"></circle></svg>
+          <span data-es="Foto: servidores / IoT" data-en="Photo: servers / IoT">Foto: servidores / IoT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="bgpattern"></div>
+  <div class="wrap inner">
+    <h2 data-es="¿Qué proceso te está costando más?" data-en="Which process is costing you the most?">¿Qué proceso te está costando más?</h2>
+    <p data-es="Cuéntanos tu caso. Primera conversación de 30 minutos, sin preparación." data-en="Tell us about your case. First conversation, 30 minutes, no prep needed.">Cuéntanos tu caso. Primera conversación de 30 minutos, sin preparación.</p>
+    <div class="contact-ctas">
+      <a href="mailto:tech@codemecsys.com" class="btn btn-primary" data-es="Escribir a CodeMec" data-en="Email CodeMec">Escribir a CodeMec</a>
+      <a href="https://www.instagram.com/codemec.projects" target="_blank" rel="noopener" class="btn btn-outline-dark">@codemecsystems</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <span class="foot-brand">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#94bce3" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19"></rect><rect x="8" y="8" width="8" height="8" fill="#94bce3" stroke="none"></rect><path d="M12 2.5v5.5M12 16v5.5M2.5 12H8M16 12h5.5"></path></svg>
+      <span>Codemec Systems</span>
+    </span>
+    <span data-es="Soluciones que impulsan tu negocio" data-en="Solutions that drive your business">Soluciones que impulsan tu negocio</span>
+    <span class="push">Guatemala · © 2026</span>
+  </div>
+</footer>
+
+<script>
+  var btn = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobilemenu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+  });
+
+  var TITLES = {
+    es: 'CodeMec Systems — Automatización, IA y Datos',
+    en: 'CodeMec Systems — Automation, AI and Data'
+  };
+  var DESCRIPTIONS = {
+    es: 'Diseñamos procesos, construimos sistemas y automatizamos operaciones. Software que hace el trabajo repetitivo por tu equipo. Guatemala.',
+    en: 'We design processes, build systems, and automate operations. Software that does the repetitive work for your team. Guatemala.'
+  };
+
+  function setLang(lang){
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang] || TITLES.es;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', DESCRIPTIONS[lang] || DESCRIPTIONS.es);
+
+    document.querySelectorAll('[data-' + lang + ']').forEach(function(el){
+      el.textContent = el.getAttribute('data-' + lang);
+    });
+    document.querySelectorAll('[data-' + lang + '-html]').forEach(function(el){
+      el.innerHTML = el.getAttribute('data-' + lang + '-html');
+    });
+
+    var esBtn = document.getElementById('langEs');
+    var enBtn = document.getElementById('langEn');
+    if (esBtn && enBtn){
+      esBtn.classList.toggle('active', lang === 'es');
+      enBtn.classList.toggle('active', lang === 'en');
+    }
+
+    try { localStorage.setItem('codemec_lang', lang); } catch(e){}
+  }
+
+  (function initLang(){
+    var saved = null;
+    try { saved = localStorage.getItem('codemec_lang'); } catch(e){}
+    setLang(saved === 'en' ? 'en' : 'es');
+  })();
+</script>
+</body>
+</html>
